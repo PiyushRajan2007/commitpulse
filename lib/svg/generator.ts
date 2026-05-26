@@ -55,45 +55,24 @@ function generateParticles(
   x: number,
   y: number,
   height: number,
-  color: string,
   count: number,
-  sf: number
+  sf: number,
+  autoTheme: boolean = false,
+  color: string = ''
 ): string {
   let particles = '';
   const numParticles = particleCount(count);
 
   for (let i = 0; i < numParticles; i++) {
-    const seed = `${x}:${y}:${height}:${color}:${count}:${i}`;
+    const themeSeed = autoTheme ? 'auto' : color;
+    const seed = `${x}:${y}:${height}:${themeSeed}:${count}:${i}`;
     const offsetX = deterministicRandom(`${seed}:offsetX`) * 6 - 3;
     const delay = deterministicRandom(`${seed}:delay`) * 1.5;
 
-    particles += `
-      <circle cx="${x + offsetX}" cy="${y - height}" r="${1.5 * sf}" fill="${color}" opacity="1">
-        <animate attributeName="cy" from="${y - height}" to="${y - height - 20}" dur="1.5s" begin="${delay}s" repeatCount="indefinite" />
-        <animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="${delay}s" repeatCount="indefinite" />
-      </circle>
-    `;
-  }
-  return `<g class="heat-particles">${particles}</g>`;
-}
-
-function generateAutoParticles(
-  x: number,
-  y: number,
-  height: number,
-  count: number,
-  sf: number
-): string {
-  let particles = '';
-  const numParticles = particleCount(count);
-
-  for (let i = 0; i < numParticles; i++) {
-    const seed = `${x}:${y}:${height}:auto:${count}:${i}`;
-    const offsetX = deterministicRandom(`${seed}:offsetX`) * 6 - 3;
-    const delay = deterministicRandom(`${seed}:delay`) * 1.5;
+    const fillAttr = autoTheme ? 'class="cp-accent-fill"' : `fill="${color}"`;
 
     particles += `
-      <circle class="cp-accent-fill" cx="${x + offsetX}" cy="${y - height}" r="${1.5 * sf}" opacity="1">
+      <circle ${fillAttr} cx="${x + offsetX}" cy="${y - height}" r="${1.5 * sf}" opacity="1">
         <animate attributeName="cy" from="${y - height}" to="${y - height - 20}" dur="1.5s" begin="${delay}s" repeatCount="indefinite" />
         <animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="${delay}s" repeatCount="indefinite" />
       </circle>
@@ -155,7 +134,7 @@ function renderTowers(towerData: TowerData[], accent: string, text: string, sf: 
           </g>
         </g>`;
     if (t.contributionCount >= 10)
-      towers += generateParticles(t.x, t.y, t.h, accent, t.contributionCount, sf);
+      towers += generateParticles(t.x, t.y, t.h, t.contributionCount, sf, false, accent);
   }
   return towers;
 }
@@ -287,7 +266,7 @@ function generateAutoThemeSVG(
           </g>
         </g>`;
     if (t.contributionCount >= 10)
-      towers += generateAutoParticles(t.x, t.y, t.h, t.contributionCount, sf);
+      towers += generateParticles(t.x, t.y, t.h, t.contributionCount, sf, true);
   }
 
   const s = (n: number) => Math.round(n * sf);
