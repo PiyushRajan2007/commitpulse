@@ -382,9 +382,19 @@ export default function LandingPage() {
         <footer className="mt-32 flex flex-col items-center justify-between gap-6 border-t border-white/5 pt-8 text-sm text-white/30 md:flex-row">
           <p>&copy; 2026 CommitPulse. Designed for the elite builder community.</p>
           <div className="flex gap-8">
-            <Link href="/documentation" className="transition-colors hover:text-white">
-              Documentation
+            <Link href="/contributors" className="transition-colors hover:text-white">
+              Contributors
             </Link>
+
+            <a
+              href="https://github.com/JhaSourav07/commitpulse/blob/main/README.md"
+              target="_blank"
+              rel="noreferrer"
+              className="transition-colors hover:text-white"
+            >
+              Documentation
+            </a>
+
             <a
               href="https://github.com/jhasourav07"
               target="_blank"
