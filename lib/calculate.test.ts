@@ -200,6 +200,13 @@ describe('calculateStreak', () => {
     expect(result.longestStreak).toBe(1);
   });
 
+  it('does not walk past the start of a 1-day calendar when grace is larger than the available days', () => {
+    const calendar = buildCalendar([1]);
+
+    const result = calculateStreak(calendar, 'UTC', undefined, 7);
+    expect(result.currentStreak).toBe(1);
+  });
+
   it('handles a single inactive day safely (0 contributions)', () => {
     const calendar = buildCalendar([0]);
     expect(() => calculateStreak(calendar)).not.toThrow();
