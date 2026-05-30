@@ -48,10 +48,14 @@ describe('calculateStreak', () => {
     ]);
 
     const result = calculateStreak(calendar);
-
     expect(result.currentStreak).toBe(0);
     expect(result.longestStreak).toBe(0);
     expect(result.totalContributions).toBe(0);
+  });
+  it('verifies weekend only streaks', () => {
+    const c = buildCalendar([1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1]);
+    const s = calculateStreak(c);
+    expect(s.longestStreak).toBe(2);
   });
 
   it('handles multiple weeks of zero contributions separating active streaks', () => {
