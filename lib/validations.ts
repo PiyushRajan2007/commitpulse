@@ -183,7 +183,13 @@ export const streakParamsSchema = z.object({
   grace: z.string().optional().transform(toGraceValue).default(1),
   mode: z.enum(['commits', 'loc']).catch('commits').default('commits'),
   repo: z.string().optional(),
-  org: z.string().optional(),
+  org: z
+    .string()
+    .optional()
+    .max(39, { message: 'Organization name cannot exceed 39 characters' })
+    .regex(GITHUB_USERNAME_REGEX, {
+      message: 'Invalid organization name format',
+    }),
   labels: z.string().optional().transform(toBooleanFlag),
   labelColor: z
     .string()
