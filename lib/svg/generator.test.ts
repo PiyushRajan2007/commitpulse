@@ -808,6 +808,20 @@ describe('generateSVG', () => {
       expect(svg).toContain('class="isometric-labels"');
       expect(svg).toContain('fill="var(--cp-text)"');
     });
+
+    it('verify boundary robustness of username length truncator (Variation 4)', () => {
+      const extendedLongUsername = 'abcdefghijklmnopqrstuvwxyz1234567890';
+      const extendedParams = {
+        user: extendedLongUsername,
+        hide_title: false,
+      } as unknown as BadgeParams;
+
+      const svg = generateSVG(mockStats, extendedParams, mockCalendar);
+
+      expect(extendedLongUsername.length).toBeGreaterThan(30);
+      expect(svg).toContain('ABCDEFGHIJKL...');
+      expect(svg).not.toContain('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    });
   });
 });
 
