@@ -1,8 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { stripHash, isValidHex, buildQueryParams } from './utils';
+import {
+  stripHash,
+  isValidHex,
+  buildQueryParams,
+  getExportSnippet,
+  getPlaceholderSnippet,
+} from './utils';
 import type { CustomizeOptions } from './types';
-import { describe, expect, it } from 'vitest';
-import { getExportSnippet, getPlaceholderSnippet } from './utils';
 
 describe('Export Snippet utilities', () => {
   const EXPECTED_BASE_URL = 'https://commitpulse.vercel.app/api/streak';
@@ -112,6 +116,7 @@ describe('Export Snippet utilities', () => {
       badgeHeight: '',
       grace: 1,
       language: 'en',
+      timezone: 'UTC',
     };
 
     it('returns minimal params with default values', () => {
@@ -179,10 +184,11 @@ describe('Export Snippet utilities', () => {
         badgeHeight: 400,
         grace: 2,
         language: 'es' as const,
+        timezone: 'America/New_York' as const,
       };
       const result = buildQueryParams(options);
       expect(result).toBe(
-        'user=testuser&theme=dark&scale=log&speed=4s&font=fira&year=2023&radius=12&size=large&hide_title=true&hide_background=true&hide_stats=true&view=monthly&delta_format=absolute&width=600&height=400&grace=2&lang=es'
+        'user=testuser&theme=dark&scale=log&speed=4s&font=fira&year=2023&radius=12&size=large&hide_title=true&hide_background=true&hide_stats=true&view=monthly&delta_format=absolute&width=600&height=400&grace=2&lang=es&tz=America%2FNew_York'
       );
     });
   });

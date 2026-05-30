@@ -1,6 +1,4 @@
 import type { CustomizeOptions, ExportFormat } from './types';
-const BADGE_BASE_URL = 'https://commitpulse.vercel.app/api/streak';
-import type { ExportFormat } from './types';
 
 const BADGE_BASE_URL = `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://commitpulse.vercel.app'}/api/streak`;
 
@@ -113,6 +111,7 @@ export function buildQueryParams(options: CustomizeOptions): string {
   if (options.badgeHeight !== '') params.set('height', options.badgeHeight.toString());
   if (options.grace !== 1) params.set('grace', options.grace.toString());
   if (options.language !== 'en') params.set('lang', options.language);
+  if (options.timezone !== 'UTC') params.set('tz', options.timezone);
 
   return params.toString();
 }

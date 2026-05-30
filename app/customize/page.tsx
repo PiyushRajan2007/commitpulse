@@ -83,52 +83,8 @@ export default function CustomizePage(): ReactElement {
     }
   }, []);
 
-  // ── buildQueryParams ──────────────────────────────────────────────────────
-
-  const buildQueryParams = useCallback((): string => {
-    const params = new URLSearchParams();
-
-    if (hasUsername) {
-      params.set('user', trimmedUsername);
-    }
-
-    if (skipsCustomColors) {
-      // Virtual themes always emit theme=<name> and skip custom color params.
-      params.set('theme', theme);
-    } else {
-      const hasCustomColors = bgHex || accentHex || textHex;
-
-      // Custom hex colors take priority over theme
-      if (!hasCustomColors) {
-        params.set('theme', theme);
-      }
-      if (bgHex) params.set('bg', stripHash(bgHex));
-      if (accentHex) params.set('accent', stripHash(accentHex));
-      if (textHex) params.set('text', stripHash(textHex));
-    }
-
-    if (scale !== 'linear') params.set('scale', scale);
-    if (speed !== '8s') params.set('speed', speed);
-    if (font) params.set('font', font);
-    if (year) params.set('year', year);
-    if (radius !== 8) params.set('radius', radius.toString());
-    if (size !== 'medium') params.set('size', size);
-
-    if (hideTitle) params.set('hide_title', 'true');
-    if (hideBackground) params.set('hide_background', 'true');
-    if (hideStats) params.set('hide_stats', 'true');
-    if (viewMode !== 'default') params.set('view', viewMode);
-    if (deltaFormat !== 'percent') params.set('delta_format', deltaFormat);
-    if (badgeWidth !== '') params.set('width', badgeWidth.toString());
-    if (badgeHeight !== '') params.set('height', badgeHeight.toString());
-    if (grace !== 1) params.set('grace', grace.toString());
-    if (language !== 'en') params.set('lang', language);
-    if (timezone !== 'UTC') params.set('tz', timezone);
-
-    return params.toString();
-  }, [
-    hasUsername,
-    trimmedUsername,
+  const queryString = buildQueryParams({
+    username,
     theme,
     bgHex,
     accentHex,
@@ -149,9 +105,7 @@ export default function CustomizePage(): ReactElement {
     grace,
     language,
     timezone,
-  ]);
-
-  const queryString = buildQueryParams();
+  });
   const previewSrc = `/api/streak?${queryString}`;
   const exportSnippet = getExportSnippet(exportFormat, queryString);
 

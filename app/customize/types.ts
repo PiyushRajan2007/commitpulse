@@ -85,6 +85,7 @@ export interface CustomizeOptions {
   badgeHeight: number | '';
   grace: number;
   language: Language;
+  timezone: Timezone;
 }
 export const TIMEZONES = [
   { value: 'UTC', label: 'UTC (Default)' },
